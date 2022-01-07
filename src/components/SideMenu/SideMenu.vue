@@ -81,7 +81,11 @@ export default {
 		// choice menuItem callback
 		handleClick(e) {
 			const to = e.domEvent.target.dataset.to;
-			this.$router.push(`/home/${to}`);
+			const toPath = `/home/${to}`
+			if(this.$route.path === toPath){
+				return ;
+			}
+			this.$router.push(toPath);
 		},
 		// title onclick callback
 		titleClick(e) {

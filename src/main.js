@@ -12,6 +12,8 @@ import {
 	Tag,
 	Divider,
 	Pagination,
+	Modal,
+	Drawer,
 } from "ant-design-vue";
 // 导入 vue-router
 import router from "./router/index";
@@ -29,7 +31,9 @@ Vue.use(Button)
 	.use(Table)
 	.use(Tag)
 	.use(Divider)
-	.use(Pagination);
+	.use(Pagination)
+	.use(Modal)
+	.use(Drawer);
 
 Vue.prototype.$message = message;
 
