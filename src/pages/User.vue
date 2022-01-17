@@ -1,12 +1,12 @@
 <template>
-	<div class="continar">
+	<div class="container">
 		<!-- header -->
 		<Header
 			@search="onSearch"
 			:TitlAndSubTitle="TitlAndSubTitle"
 			:isLoading="isLoading"
 			@delcheck="delcheck"
-			@newUser="newUser"
+			@newObject="newUser"
 		/>
 
 		<!-- table -->
@@ -19,7 +19,9 @@
 
 		<!-- del modal -->
 		<Modal :delChecked="delChecked" />
-		<Drawer :newUserDrawer="newUserDrawer" />
+		<Drawer :newUserDrawer="newUserDrawer">
+			<template v-slot:main> <UserForm @putUser="putUser" /> </template>
+		</Drawer>
 	</div>
 </template>
 
@@ -28,8 +30,9 @@ import Table from "../components/Table/Table.vue";
 import Header from "../components/Header/Header.vue";
 import Modal from "../components/Modal/Modal.vue";
 import Drawer from "../components/Drawer/Drawer.vue";
+import UserForm from "../components/UserForm/UserForm.vue";
 export default {
-	components: { Table, Header, Modal, Drawer },
+	components: { Table, Header, Modal, Drawer, UserForm },
 	data() {
 		return {
 			TitlAndSubTitle: {
@@ -74,27 +77,26 @@ export default {
 					align: "center",
 				},
 				{
-					title: "Age",
-					dataIndex: "age",
-					key: "age",
+					title: "昵称",
+					dataIndex: "username",
+					key: "username",
 					width: 100,
 					align: "center",
 				},
 				{
-					title: "Address",
-					dataIndex: "address",
-					key: "address",
-					width: 500,
+					title: "手机号",
+					dataIndex: "tel",
+					key: "tel",
+					width: 100,
 				},
 				{
-					title: "Tags",
-					key: "tags",
-					dataIndex: "tags",
-					scopedSlots: { customRender: "tags" },
-					width: 260,
+					title: "创建时间",
+					key: "createTime",
+					dataIndex: "createTime",
+					width: 100,
 				},
 				{
-					title: "Action",
+					title: "操作",
 					key: "action",
 					scopedSlots: { customRender: "action" },
 					width: 350,
@@ -107,10 +109,10 @@ export default {
 				tableData: [
 					{
 						key: "1",
-						name: "John Brown",
-						age: 32,
-						address: "New York No. 1 Lake Park",
-						tags: ["nice", "developer"],
+						name: "张三",
+						username: "dimon",
+						tel: "12345678901",
+						createTime: "2020-11-28",
 					},
 					// {
 					// 	key: "2",
@@ -244,6 +246,21 @@ export default {
 		};
 	},
 	methods: {
+		putUser(user) {
+			console.log(user);
+			this.$message.loading("添加用户", 2);
+		},
+		clearForm() {
+			this.form.resetFields();
+		},
+		handleSubmit(e) {
+			e.preventDefault();
+			this.form.validateFields((err, values) => {
+				if (!err) {
+					console.log("Received values of form: ", values);
+				}
+			});
+		},
 		onSearch(value) {
 			this.isLoading = true;
 			setTimeout(() => {
@@ -267,17 +284,20 @@ export default {
 </script>
 
 <style scoped>
+.must {
+	color: red;
+}
 tr:last-child td {
 	padding-bottom: 0;
 }
-.table_continar {
+/* .table_continar {
 	width: 100%;
 	padding: 20px;
 	padding-bottom: 0px;
 	position: relative;
 	height: 100%;
-}
-.continar {
+} */
+.container {
 	width: 100%;
 	height: 100%;
 	display: flex;

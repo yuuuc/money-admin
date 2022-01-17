@@ -49,7 +49,7 @@ export default {
 			this.$emit("delcheck");
 		},
 		newUser() {
-			this.$emit("newUser");
+			this.$emit("newObject");
 		},
 		// showDrawer() {
 		// 	this.visible = true;

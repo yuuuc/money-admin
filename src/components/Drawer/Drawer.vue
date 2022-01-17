@@ -6,7 +6,13 @@
 		:body-style="{ paddingBottom: '80px' }"
 		@close="newUserDrawer.onClose"
 	>
-		<div>1234</div>
+		<div class="main">
+			<slot name="main"></slot>
+		</div>
+
+		<div class="footer">
+			<slot name="footer"></slot>
+		</div>
 	</a-drawer>
 </template>
 
@@ -20,3 +26,16 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.main {
+	width: 100%;
+	height: 700px;
+	padding: 10px;
+}
+.footer {
+	margin-top: 20px;
+	width: 100%;
+	height: 80px;
+}
+</style>

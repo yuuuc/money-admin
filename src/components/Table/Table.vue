@@ -11,24 +11,14 @@
 		size="middle"
 		:loading="isLoading"
 	>
-		<span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-		<span slot="tags" slot-scope="tags">
-			<a-tag
-				v-for="tag in tags"
-				:key="tag"
-				:color="
-					tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'
-				"
-			>
-				{{ tag.toUpperCase() }}
-			</a-tag>
-		</span>
+		<span slot="customTitle"><a-icon type="smile-o" /> 姓名</span>
+
 		<span slot="action" slot-scope="text, record">
-			<a>Invite 一 {{ record.name }}</a>
+			<a>修改 一 {{ record.name }}</a>
 			<a-divider type="vertical" />
-			<a type="danger">Delete</a>
-			<a-divider type="vertical" />
-			<a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
+			<a class="danger">删除</a>
+			<!-- <a-divider type="vertical" /> -->
+			<!-- <a class="ant-dropdown-link"> 更多操作 <a-icon type="down" /> </a> -->
 		</span>
 		<div v-if="IsShowPagination" slot="footer">
 			<a-pagination :default-current="currentPage" :total="allRecord" />
@@ -94,5 +84,8 @@ tr:last-child td {
 	padding-bottom: 0px;
 	position: relative;
 	height: 100%;
+}
+.danger {
+	color: red;
 }
 </style>
