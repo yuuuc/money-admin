@@ -1,5 +1,9 @@
 <template>
-	<div class="chart-box" ref="chartBox"></div>
+	<div class="chart_item">
+		<div class="chart-box" ref="chartBox"></div>
+		<div class="main">main</div>
+		<div class="footer">footer</div>
+	</div>
 </template>
 
 <script>
@@ -12,9 +16,7 @@ export default {
 	},
 	mounted() {
 		if (this.chartModule.data != null) {
-			console.log(this.chartModule.data);
 			let chartBox = this.$refs.chartBox;
-			console.log(chartBox);
 			var myChart = this.echarts.init(chartBox);
 			myChart.setOption(this.chartModule.data);
 		}
@@ -22,15 +24,25 @@ export default {
 };
 </script>
 
-<style>
-.chart-box {
-	margin: 10px 20px;
-	box-sizing: border-box;
-	border-radius: 5px;
+<style scoped>
+.chart_item {
+	display: flex;
 	border: 1px solid #ddd;
-	min-width: 300px;
-	max-width: 400px;
-	height: 400px;
+	border-radius: 5px;
+}
+.chart-box {
+	padding: 20px 0px 0px 0px;
+	border-right: 1px #ddd solid;
+	height: 350px;
+	width: 550px;
+	margin-left: 10px;
+}
+.main {
+	margin: 0px 5px;
+	border-right: 1px #ddd solid;
 	flex: 1;
+}
+.footer {
+	width: 150px;
 }
 </style>

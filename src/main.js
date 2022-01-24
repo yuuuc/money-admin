@@ -24,7 +24,7 @@ import "./assets/css/global.css";
 // 注册echarts
 import * as echarts from "echarts/core";
 // 引入柱状图 图标
-import { BarChart } from "echarts/charts";
+import { BarChart, PieChart, LineChart } from "echarts/charts";
 // 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
 	TitleComponent,
@@ -50,6 +50,8 @@ echarts.use([
 	LabelLayout,
 	UniversalTransition,
 	CanvasRenderer,
+	PieChart,
+	LineChart,
 ]);
 
 Vue.prototype.echarts = echarts;
