@@ -31,47 +31,47 @@ export default {
 	props: {
 		columns: {
 			type: Array,
-			required: true,
+			required: true
 		},
 		pageAndTableData: {
 			type: Object,
-			required: true,
+			required: true
 		},
 		rowSelection: {
 			type: Object,
-			required: true,
+			required: true
 		},
 		isLoading: {
 			type: Boolean,
-			required: true,
-		},
+			required: true
+		}
 	},
 	data() {
-		return {};
+		return {}
 	},
 	methods: {},
 	computed: {
 		newTableData() {
-			const data = this.pageAndTableData.tableData;
-			console.log(data);
+			const data = this.pageAndTableData.tableData
+			console.log(data)
 			if (data.length > 15) {
-				data.splice(15);
+				data.splice(15)
 			}
-			return data;
+			return data
 		},
 		currentPage() {
-			const { currentPage } = this.pageAndTableData;
-			return currentPage;
+			const { currentPage } = this.pageAndTableData
+			return currentPage
 		},
 		allRecord() {
-			const { allRecord } = this.pageAndTableData;
-			return allRecord;
+			const { allRecord } = this.pageAndTableData
+			return allRecord
 		},
 		IsShowPagination() {
-			return this.allRecord > 15 ? true : false;
-		},
-	},
-};
+			return this.allRecord > 15 ? true : false
+		}
+	}
+}
 </script>
 
 <style scoped>
