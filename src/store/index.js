@@ -7,7 +7,9 @@ import getters from './getters'
 
 Vue.use(Vuex)
 
-const state = {}
+const state = {
+	uid: String
+}
 
 const vuex = new Vuex.Store({
 	state,

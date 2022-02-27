@@ -5,8 +5,8 @@
 				v-decorator="[
 					'name',
 					{
-						rules: [{ required: true, message: '请输入你的用户名' }],
-					},
+						rules: [{ required: true, message: '请输入你的用户名' }]
+					}
 				]"
 				placeholder="Please input your name"
 			/>
@@ -17,24 +17,11 @@
 				v-decorator="[
 					'username',
 					{
-						rules: [{ required: true, message: '请输入你的昵称' }],
-					},
+						rules: [{ required: true, message: '请输入你的昵称' }]
+					}
 				]"
 				placeholder="Please input your username"
 			/>
-		</a-form-item>
-
-		<a-form-item v-bind="formItemLayout" label="性别">
-			<a-select
-				v-decorator="[
-					'gender',
-					{ rules: [{ required: true }], initialValue: '1' },
-				]"
-				style="width: 100%"
-			>
-				<a-select-option value="1"> 男 </a-select-option>
-				<a-select-option value="0"> 女 </a-select-option>
-			</a-select>
 		</a-form-item>
 
 		<a-form-item v-bind="formItemLayout" label="手机号">
@@ -43,8 +30,8 @@
 					'tel',
 					{
 						rules: [{ required: true, message: '请输入手机号!' }],
-						type: 'number',
-					},
+						type: 'number'
+					}
 				]"
 				style="width: 100%"
 			>
@@ -58,26 +45,6 @@
 			</a-input>
 		</a-form-item>
 
-		<a-form-item v-bind="formItemLayout" label="E-mail">
-			<a-input
-				v-decorator="[
-					'email',
-					{
-						rules: [
-							{
-								type: 'email',
-								message: '请输入正确的E-mail地址!',
-							},
-							{
-								required: true,
-								message: '请输入你的E-mail地址',
-							},
-						],
-					},
-				]"
-			/>
-		</a-form-item>
-
 		<a-form-item v-bind="formItemLayout" label="密码" has-feedback>
 			<a-input
 				v-decorator="[
@@ -86,13 +53,13 @@
 						rules: [
 							{
 								required: true,
-								message: '请输入你的密码!',
+								message: '请输入你的密码!'
 							},
 							{
-								validator: validateToNextPassword,
-							},
-						],
-					},
+								validator: validateToNextPassword
+							}
+						]
+					}
 				]"
 				type="password"
 			/>
@@ -105,13 +72,13 @@
 						rules: [
 							{
 								required: true,
-								message: '请重复输入你的密码!',
+								message: '请重复输入你的密码!'
 							},
 							{
-								validator: compareToFirstPassword,
-							},
-						],
-					},
+								validator: compareToFirstPassword
+							}
+						]
+					}
 				]"
 				type="password"
 				@blur="handleConfirmBlur"
@@ -135,71 +102,71 @@ export default {
 			formItemLayout: {
 				labelCol: {
 					xs: { span: 24 },
-					sm: { span: 5 },
+					sm: { span: 5 }
 				},
 				wrapperCol: {
 					xs: { span: 24 },
-					sm: { span: 16 },
-				},
+					sm: { span: 16 }
+				}
 			},
 			tailFormItemLayout: {
 				wrapperCol: {
 					xs: {
 						span: 24,
-						offset: 0,
+						offset: 0
 					},
 					sm: {
 						span: 16,
-						offset: 8,
-					},
-				},
-			},
-		};
+						offset: 8
+					}
+				}
+			}
+		}
 	},
 	beforeCreate() {
-		this.form = this.$form.createForm(this, { name: "userForm" });
+		this.form = this.$form.createForm(this, { name: 'userForm' })
 	},
 	methods: {
 		handleClear() {
-			this.form.resetFields();
+			this.form.resetFields()
 		},
 		handleSubmit(e) {
-			const { form } = this;
-			e.preventDefault();
+			const { form } = this
+			e.preventDefault()
 			form.validateFieldsAndScroll((err, values) => {
 				if (!err) {
-					this.$emit("putUser", values);
-					form.resetFields();
+					this.$emit('putUser', values)
+					form.resetFields()
 				}
-			});
+			})
 		},
 		handleConfirmBlur(e) {
-			const value = e.target.value;
-			this.confirmDirty = this.confirmDirty || !!value;
+			const value = e.target.value
+			this.confirmDirty = this.confirmDirty || !!value
 		},
 		compareToFirstPassword(rule, value, callback) {
-			const form = this.form;
-			if (value && value !== form.getFieldValue("password")) {
-				callback("两次输入的密码不相同!");
+			const form = this.form
+			if (value && value !== form.getFieldValue('password')) {
+				callback('两次输入的密码不相同!')
 			} else {
-				callback();
+				callback()
 			}
 		},
 		validateToNextPassword(rule, value, callback) {
-			const form = this.form;
-			const reg = /^[a-zA-Z]{1}[a-z0-9A-Z]{5,19}$/;
-			if (value.trim() == "") {
-				callback();
+			const form = this.form
+			const reg = /^[a-zA-Z]{1}[a-z0-9A-Z]{5,19}$/
+			if (value.trim() == '') {
+				callback()
 			}
 			if (!reg.exec(value)) {
-				callback("密码必须以字母开头,长度为6-20");
+				callback('密码必须以字母开头,长度为6-20')
 			} else {
 				if (value && this.confirmDirty) {
-					form.validateFields(["confirm"], { force: true });
+					form.validateFields(['confirm'], { force: true })
 				}
-				callback();
+				callback()
 			}
-		},
-	},
-};
+		}
+	}
+}
 </script>

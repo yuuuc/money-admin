@@ -31,34 +31,34 @@ export default {
 	props: {
 		TitlAndSubTitle: {
 			type: Object,
-			required: true,
+			required: true
 		},
 		isLoading: {
 			type: Boolean,
-			required: true,
-		},
+			required: true
+		}
 	},
 	data() {
-		return {};
+		return {}
 	},
 	methods: {
 		onSearch(value) {
-			this.$emit("search", value);
+			this.$emit('search', value)
 		},
 		delCheck() {
-			this.$emit("delcheck");
+			this.$emit('delChecked')
 		},
 		newUser() {
-			this.$emit("newObject");
-		},
+			this.$emit('newObject')
+		}
 		// showDrawer() {
 		// 	this.visible = true;
 		// },
 		// onClose() {
 		// 	this.visible = false;
 		// },
-	},
-};
+	}
+}
 </script>
 
 <style scoped>

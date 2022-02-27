@@ -14,14 +14,21 @@
 		<span slot="customTitle"><a-icon type="smile-o" /> 姓名</span>
 
 		<span slot="action" slot-scope="text, record">
-			<a>修改 一 {{ record.name }}</a>
+			<a @click="updateOne(record)">修改 一 {{ record.name }}</a>
 			<a-divider type="vertical" />
-			<a class="danger">删除</a>
+			<a @click="deleteOne(record.key)" class="danger">删除</a>
 			<!-- <a-divider type="vertical" /> -->
 			<!-- <a class="ant-dropdown-link"> 更多操作 <a-icon type="down" /> </a> -->
 		</span>
+
 		<div v-if="IsShowPagination" slot="footer">
-			<a-pagination :default-current="currentPage" :total="allRecord" />
+			<a-pagination
+				@change="pageChange"
+				:default-current="currentPage"
+				:total="allRecord"
+				:defaultPageSize="15"
+				:statePageSize="pageSize"
+			/>
 		</div>
 	</a-table>
 </template>
@@ -49,11 +56,20 @@ export default {
 	data() {
 		return {}
 	},
-	methods: {},
+	methods: {
+		deleteOne(key) {
+			this.$emit('deleteOne', key)
+		},
+		updateOne(record) {
+			this.$emit('updateOne', record)
+		},
+		pageChange(currentPage) {
+			this.$emit('currentPage', currentPage)
+		}
+	},
 	computed: {
 		newTableData() {
 			const data = this.pageAndTableData.tableData
-			console.log(data)
 			if (data.length > 15) {
 				data.splice(15)
 			}
@@ -66,6 +82,10 @@ export default {
 		allRecord() {
 			const { allRecord } = this.pageAndTableData
 			return allRecord
+		},
+		pageSize() {
+			const { pageSize } = this.pageAndTableData
+			return pageSize
 		},
 		IsShowPagination() {
 			return this.allRecord > 15 ? true : false

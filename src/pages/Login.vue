@@ -5,7 +5,7 @@
 			<input
 				type="text"
 				id="username"
-				v-model="name"
+				v-model="username"
 				placeholder="用户名/账号"
 			/>
 		</div>
@@ -29,15 +29,31 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
 	data() {
 		return {
-			name: '',
+			username: '',
 			password: '',
 			loginText: '登录'
 		}
 	},
-	methods: {}
+	methods: {
+		...mapActions(['login']),
+		login() {
+			const { username, password } = this
+			this.$store
+				.dispatch('login', { username, password })
+				.then((res) => {
+					if (res.messageCode === 'success') {
+						this.$router.replace('/home')
+					}
+				})
+				.catch((err) => {
+					console.log('loginError ' + err)
+				})
+		}
+	}
 }
 </script>
 
