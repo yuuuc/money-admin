@@ -19,7 +19,13 @@
 
 		<template slot="extra">
 			<a-button type="danger" @click="delCheck"> delete </a-button>
-			<a-button type="primary" @click="newUser"> new </a-button>
+			<a-button
+				type="primary"
+				v-if="TitlAndSubTitle.newIsShow"
+				@click="newUser"
+			>
+				new
+			</a-button>
 		</template>
 
 		<!-- <Drawer /> -->

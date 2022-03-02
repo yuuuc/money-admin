@@ -1,37 +1,197 @@
 <template>
 	<div class="container">
-		<Chart class="charts" :chartModule="chartModule">
+		<Chart
+			class="charts"
+			@save="barSave"
+			:chartModule="chartModule"
+			@newMessage="newHandle"
+		>
 			<template v-slot:main>
 				<CountMessageFormat
-					v-for="(item, index) in barMessageFormatList"
+					v-for="(item, index) in barData"
 					:key="index"
 					:messageFormat="item"
 					@checked="onBarChecked"
+					@deleteOne="deleteOne"
 				/>
 			</template>
 		</Chart>
-		<Chart class="charts" :chartModule="pieModule" />
+		<Chart
+			class="charts"
+			:chartModule="pieModule"
+			@save="pieSave"
+			@newMessage="newHandle"
+		>
+			<template v-slot:main>
+				<CountMessageFormat
+					v-for="(item, index) in pieData"
+					:key="index"
+					:messageFormat="item"
+					@checked="onPieChecked"
+					@deleteOne="deleteOne"
+				/>
+			</template>
+		</Chart>
+
+		<a-modal
+			title="添加格式"
+			:visible="addMessageFormatvisible"
+			:confirm-loading="addMessageFormatLoading"
+			@ok="addMessageFormatHandle"
+			@cancel="addMessageFormatHandleCancel"
+		>
+			<div class="addMessageFormat">
+				<div class="title">标题</div>
+				<div class="description">显示内容</div>
+				<div class="checkbox">操作</div>
+			</div>
+			<div class="addMessageFormat">
+				<a-input class="title" v-model="messageFormat.title" />
+				<a-input class="description" v-model="messageFormat.description" />
+				<a-checkbox class="checkbox" v-model="messageFormat.isShow">
+					勾选展示
+				</a-checkbox>
+			</div>
+		</a-modal>
 	</div>
 </template>
 
 <script>
 import Chart from '../components/Chart/Chart.vue'
 import CountMessageFormat from '../components/CountMessageFormat/CountMessageFormat.vue'
+import {
+	getMessageFormats,
+	postUpdateMessageFormats,
+	postInsertMessageFormat,
+	postDeleteOneMessageFormat
+} from '../api/countApi'
 export default {
 	components: { Chart, CountMessageFormat },
+	created() {
+		this.getAllMessageFormat()
+	},
 	methods: {
-		onBarChecked(checked, type) {
-			const index = this.barList.indexOf(type)
-			if (checked) {
-				this.barList.push(type)
-			} else {
-				this.barList.splice(index, 1)
+		deleteOne(id) {
+			postDeleteOneMessageFormat({ cmid: id })
+				.then((res) => {
+					if (res.messageCode == 'ok') {
+						this.$message.success('删除成功', 2)
+						this.getAllMessageFormat()
+					} else {
+						this.$message.error('删除失败', 2)
+					}
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		},
+		getAllMessageFormat() {
+			getMessageFormats()
+				.then((res) => {
+					console.log(res)
+					this.allMessageFormat = res.data.messageFormats
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		},
+		onBarChecked(record) {
+			this.allMessageFormat.find((item) => item.cmid === record.cmid).isShow =
+				record.isShow == 1 ? 0 : 1
+		},
+		onPieChecked(record) {
+			this.allMessageFormat.find((item) => item.cmid === record.cmid).isShow =
+				record.isShow == 1 ? 0 : 1
+		},
+		newHandle(parentid) {
+			this.messageFormat.parentid = parentid
+			this.addMessageFormatvisible = true
+		},
+		barSave() {
+			postUpdateMessageFormats(this.barData)
+				.then((res) => {
+					if (res.messageCode == 'ok') {
+						this.$message.success('保存成功!', 2)
+						this.getAllMessageFormat()
+					} else {
+						this.$message.error('保存失败', 2)
+					}
+				})
+				.catch((err) => {
+					this.$message.error('保存失败!', 2)
+					console.log(err)
+				})
+		},
+		pieSave() {
+			postUpdateMessageFormats(this.pieData)
+				.then((res) => {
+					if (res.messageCode == 'ok') {
+						this.$message.success('保存成功!', 2)
+						this.getAllMessageFormat()
+					} else {
+						this.$message.error('保存失败!', 2)
+					}
+				})
+				.catch((err) => {
+					this.$message.error('保存失败!', 2)
+					console.log(err)
+				})
+		},
+		addMessageFormatHandle() {
+			if (
+				this.messageFormat.title == '' ||
+				this.messageFormat.description == ''
+			) {
+				this.$message.error('请填写标题和显示内容!', 2)
+				return
 			}
-			console.log(this.barList)
+
+			const cp = JSON.stringify(this.messageFormat)
+			const cpData = JSON.parse(cp)
+			cpData.isShow = cpData.isShow == true ? 1 : 0
+			console.log(cpData)
+			postInsertMessageFormat(cpData)
+				.then((res) => {
+					if (res.messageCode == 'ok') {
+						this.$message.success('添加成功', 2)
+						this.addMessageFormatHandleCancel()
+						this.getAllMessageFormat()
+					} else {
+						this.$message.error('添加失败', 2)
+					}
+				})
+				.catch((err) => {
+					this.$message.error('添加失败', 2)
+					console.log(err)
+				})
+		},
+		addMessageFormatHandleCancel() {
+			this.addMessageFormatvisible = false
+			this.messageFormat.title = ''
+			this.messageFormat.description = ''
+			this.messageFormat.isShow = false
+			this.messageFormat.parentid = ''
+		}
+	},
+	computed: {
+		barData() {
+			return this.allMessageFormat.filter((item) => item.parentid == 1)
+		},
+		pieData() {
+			return this.allMessageFormat.filter((item) => item.parentid == 2)
 		}
 	},
 	data() {
 		return {
+			addMessageFormatvisible: false,
+			addMessageFormatLoading: false,
+			allMessageFormat: [],
+			messageFormat: {
+				title: '',
+				description: '',
+				isShow: false,
+				parentid: ''
+			},
 			barList: [],
 			barMessageFormatList: [
 				{
@@ -46,6 +206,7 @@ export default {
 
 			chartModule: {
 				desc: 'test ',
+				parentid: 1,
 				data: {
 					title: {
 						text: '柱状图'
@@ -102,6 +263,7 @@ export default {
 			},
 			pieModule: {
 				desc: 'test ',
+				parentid: 2,
 				data: {
 					title: {
 						text: '饼图'
@@ -147,4 +309,21 @@ export default {
 	justify-self: center;
 	align-self: center;
 } */
+.addMessageFormat {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.addMessageFormat > * {
+	margin-right: 10px;
+}
+.addMessageFormat > .title {
+	width: 70px;
+}
+.addMessageFormat > .description {
+	flex: 1;
+}
+.addMessageFormat > .checkbox {
+	width: 100px;
+}
 </style>

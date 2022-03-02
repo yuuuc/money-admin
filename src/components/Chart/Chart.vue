@@ -9,9 +9,9 @@
 				新增
 			</a-button>
 			<a-button class="button" @click="save"> 保存 </a-button>
-			<a-button class="button" type="danger" @click="delChecked">
+			<!-- <a-button class="button" type="danger" @click="delChecked">
 				删除
-			</a-button>
+			</a-button> -->
 		</div>
 	</div>
 </template>
@@ -30,44 +30,24 @@ export default {
 	},
 	methods: {
 		newMessage() {
-			this.$confirm({
-				title: 'Do you want to delete these items?',
-				content:
-					'When clicked the OK button, this dialog will be closed after 1 second',
-				onOk() {
-					return new Promise((resolve, reject) => {
-						setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-					}).catch(() => console.log('Oops errors!'))
-				},
-				onCancel() {}
-			})
+			this.$emit('newMessage', this.chartModule.parentid)
 		},
 		save() {
-			this.$confirm({
-				title: 'Do you want to delete these items?',
-				content:
-					'When clicked the OK button, this dialog will be closed after 1 second',
-				onOk() {
-					return new Promise((resolve, reject) => {
-						setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-					}).catch(() => console.log('Oops errors!'))
-				},
-				onCancel() {}
-			})
-		},
-		delChecked() {
-			this.$confirm({
-				title: 'Do you want to delete these items?',
-				content:
-					'When clicked the OK button, this dialog will be closed after 1 second',
-				onOk() {
-					return new Promise((resolve, reject) => {
-						setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-					}).catch(() => console.log('Oops errors!'))
-				},
-				onCancel() {}
-			})
+			this.$emit('save')
 		}
+		// delChecked() {
+		// 	this.$confirm({
+		// 		title: 'Do you want to delete these items?',
+		// 		content:
+		// 			'When clicked the OK button, this dialog will be closed after 1 second',
+		// 		onOk() {
+		// 			return new Promise((resolve, reject) => {
+		// 				setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+		// 			}).catch(() => console.log('Oops errors!'))
+		// 		},
+		// 		onCancel() {}
+		// 	})
+		// }
 	},
 	mounted() {
 		if (this.chartModule.data != null) {
@@ -97,11 +77,13 @@ export default {
 .main {
 	margin: 0px 5px;
 	border-right: 1px #ddd solid;
+	min-width: 600px;
 	flex: 1;
 }
 
 .footer {
-	width: 300px;
+	max-width: 300px;
+	flex: 1;
 	margin: 0 auto;
 }
 

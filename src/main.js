@@ -16,7 +16,8 @@ import {
 	Drawer,
 	Form,
 	Select,
-	Checkbox
+	Checkbox,
+	Dropdown
 } from 'ant-design-vue'
 // 导入 vue-router
 import router from './router/index'
@@ -77,6 +78,7 @@ Vue.use(Button)
 	.use(Select)
 	.use(Checkbox)
 	.use(Modal)
+	.use(Dropdown)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm

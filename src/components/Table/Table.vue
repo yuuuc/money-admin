@@ -9,12 +9,11 @@
 		:pagination="false"
 		:row-selection="rowSelection"
 		size="middle"
-		:loading="isLoading"
 	>
 		<span slot="customTitle"><a-icon type="smile-o" /> 姓名</span>
 
 		<span slot="action" slot-scope="text, record">
-			<a @click="updateOne(record)">修改 一 {{ record.name }}</a>
+			<a @click="updateOne(record)">修改 一 {{ record.name || '数据' }}</a>
 			<a-divider type="vertical" />
 			<a @click="deleteOne(record.key)" class="danger">删除</a>
 			<!-- <a-divider type="vertical" /> -->
@@ -26,8 +25,7 @@
 				@change="pageChange"
 				:default-current="currentPage"
 				:total="allRecord"
-				:defaultPageSize="15"
-				:statePageSize="pageSize"
+				:defaultPageSize="pageSize"
 			/>
 		</div>
 	</a-table>
@@ -46,10 +44,6 @@ export default {
 		},
 		rowSelection: {
 			type: Object,
-			required: true
-		},
-		isLoading: {
-			type: Boolean,
 			required: true
 		}
 	},
@@ -84,8 +78,8 @@ export default {
 			return allRecord
 		},
 		pageSize() {
-			const { pageSize } = this.pageAndTableData
-			return pageSize
+			const { size } = this.pageAndTableData
+			return size
 		},
 		IsShowPagination() {
 			return this.allRecord > 15 ? true : false
@@ -99,11 +93,11 @@ tr:last-child td {
 	padding-bottom: 0;
 }
 .table_continar {
+	box-sizing: border-box;
 	width: 100%;
 	padding: 20px;
 	padding-bottom: 0px;
 	position: relative;
-	height: 100%;
 }
 .danger {
 	color: red;

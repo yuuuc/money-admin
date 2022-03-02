@@ -14,7 +14,6 @@
 			:columns="columns"
 			:pageAndTableData="pageAndTableData"
 			:rowSelection="rowSelection"
-			:isLoading="isLoading"
 			@currentPage="pageChange"
 			@updateOne="updateOne"
 			@deleteOne="deleteOne"
@@ -82,8 +81,9 @@ export default {
 				tel: ''
 			},
 			TitlAndSubTitle: {
-				title: 'Title test',
-				subTitle: 'subTitle'
+				title: '用户管理',
+				subTitle: '',
+				newIsShow: true
 			},
 			isLoading: false,
 			// newUser对象
@@ -154,19 +154,27 @@ export default {
 	},
 	methods: {
 		updateUserHandleCancel() {
-			this.updateUser = {}
+			this.updateUser = {
+				uid: '',
+				name: '',
+				username: '',
+				password: '',
+				tel: ''
+			}
 			this.updateUservisible = false
+			this.updateUserconfirmLoading = false
 		},
 		updateUserHandle() {
 			this.updateUserconfirmLoading = true
 			postUpdateUser(this.updateUser)
 				.then((res) => {
+					console.log(res)
 					if (res.messageCode == 'ok') {
 						this.$message.success('修改成功', 2)
 					} else {
 						this.$message.error('修改失败', 2)
 					}
-					this.updateUservisible = false
+					this.updateUserHandleCancel()
 					this.UsersData()
 				})
 				.catch((err) => {
@@ -222,7 +230,7 @@ export default {
 		tableRender(data) {
 			const { total, pages, current, records, size } = data
 			this.pageAndTableData.allRecord = total
-			this.pageAndTableData.pages = pages
+			this.pageAndTableData.allPage = pages
 			this.pageAndTableData.currentPage = current
 			this.pageAndTableData.size = size
 			this.pageAndTableData.tableData = this.dataFormat(records)
@@ -335,8 +343,6 @@ tr:last-child td {
 .container {
 	width: 100%;
 	height: 100%;
-	display: flex;
-	flex-flow: column;
 }
 .update_row {
 	display: flex;

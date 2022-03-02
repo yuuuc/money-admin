@@ -8,6 +8,7 @@ const Home = () => import('../pages/Home.vue')
 const User = () => import('../pages/User.vue')
 const Count = () => import('../pages/Count.vue')
 const Account = () => import('../pages/Account.vue')
+const Type = () => import('../pages/Type.vue')
 const routes = [
 	{
 		path: '/',
@@ -27,6 +28,7 @@ const routes = [
 			{ path: 'user/', component: User },
 			{ path: 'dollar/', component: Account },
 			{ path: 'count/', component: Count },
+			{ path: 'type/', component: Type },
 			{ path: '', redirect: 'user' }
 		]
 	}

@@ -11,7 +11,6 @@ const http = axios.create({
 // 请求拦截器
 http.interceptors.request.use(
 	(config) => {
-		console.log(localStorage.getItem('uid'))
 		config.headers.Auth = localStorage.getItem('uid')
 		return config
 	},

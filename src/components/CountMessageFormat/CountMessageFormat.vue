@@ -2,12 +2,18 @@
 	<div class="row">
 		<a-input
 			class="input"
-			v-model="messageFormat.value"
-			:maxLength="messageFormat.maxLength"
-			:placeholder="messageFormat.placeholder"
+			v-model="messageFormat.description"
 			:addonBefore="messageFormat.title"
 		/>
-		<a-checkbox class="checkbox" @change="onChecked">勾选展示</a-checkbox>
+		<a-button class="delete" type="danger" @click="deleteMessageFormat">
+			删除
+		</a-button>
+		<a-checkbox
+			class="checkbox"
+			@change="onChecked"
+			:checked="messageFormat.isShow == 1 ? true : false"
+			>勾选展示</a-checkbox
+		>
 	</div>
 </template>
 
@@ -20,10 +26,11 @@ export default {
 		}
 	},
 	methods: {
-		onChecked(checkedValue) {
-			const { type } = this.messageFormat
-			const checked = checkedValue.target.checked
-			this.$emit('checked', checked, type)
+		onChecked() {
+			this.$emit('checked', this.messageFormat)
+		},
+		deleteMessageFormat() {
+			this.$emit('deleteOne', this.messageFormat.cmid)
 		}
 	}
 }
@@ -42,5 +49,8 @@ export default {
 .checkbox {
 	margin-left: 20px;
 	zoom: 100%;
+}
+.delete {
+	margin-left: 10px;
 }
 </style>
